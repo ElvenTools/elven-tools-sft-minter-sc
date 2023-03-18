@@ -19,7 +19,9 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 
 The simplest way would be with Elven Tools CLI. You can find all the guidance here: [TODO: add docs]()
 
-You could also use the snippets in the smart contract's repository or just the [mxpy](https://docs.multiversx.com/sdk-and-tools/sdk-py/mxpy-cli) tool. The code is open source, and there is an ABI file, so you should be good to go with it too.
+You could also use [mxpy](https://docs.multiversx.com/sdk-and-tools/sdk-py/mxpy-cli) tool. 
+
+The code is open source, and there is an ABI file.
 
 ## Contact and other tools
 

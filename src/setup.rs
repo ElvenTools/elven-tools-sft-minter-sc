@@ -3,7 +3,11 @@ multiversx_sc::derive_imports!();
 
 use crate::storage;
 
-const TEST_ENTRY: &[u8] = "test".as_bytes();
+const ROYALTIES_MAX: u32 = 10_000;
+const METADATA_KEY_NAME: &[u8] = "metadata:".as_bytes();
+const ATTR_SEPARATOR: &[u8] = ";".as_bytes();
+const URI_SLASH: &[u8] = "/".as_bytes();
+const TAGS_KEY_NAME: &[u8] = "tags:".as_bytes();
 
 #[multiversx_sc::module]
 pub trait Setup: storage::Storage {
@@ -17,7 +21,7 @@ pub trait Setup: storage::Storage {
         collection_token_ticker: ManagedBuffer,
     ) {
         let issue_cost = self.call_value().egld_value();
-        require!(self.sft_token_id().is_empty(), "Token already issued!");
+        require!(self.collection_token_id().is_empty(), "Token already issued!");
 
         self.collection_token_name().set(&collection_token_name);
 
@@ -50,7 +54,7 @@ pub trait Setup: storage::Storage {
     ) {
         match result {
             ManagedAsyncCallResult::Ok(token_id) => {
-                self.sft_token_id().set(&token_id.unwrap_esdt());
+                self.collection_token_id().set(&token_id.unwrap_esdt());
             }
             ManagedAsyncCallResult::Err(_) => {
                 let caller = self.blockchain().get_owner_address();
@@ -67,13 +71,13 @@ pub trait Setup: storage::Storage {
     #[only_owner]
     #[endpoint(setLocalRoles)]
     fn set_local_roles(&self) {
-        require!(!self.sft_token_id().is_empty(), "Token not issued!");
+        require!(!self.collection_token_id().is_empty(), "Token not issued!");
 
         self.send()
             .esdt_system_sc_proxy()
             .set_special_roles(
                 &self.blockchain().get_sc_address(),
-                &self.sft_token_id().get(),
+                &self.collection_token_id().get(),
                 (&[
                     EsdtLocalRole::NftCreate,
                     EsdtLocalRole::NftAddQuantity,
@@ -89,9 +93,49 @@ pub trait Setup: storage::Storage {
     // Create actual SFT with amount, assets etc. 
     #[only_owner]
     #[endpoint(createToken)]
-    fn create_token(&self) {
-        // TODO: just for testing
-        self.create_token_testing()
-            .set(ManagedBuffer::new_from_bytes(TEST_ENTRY));
+    fn create_token(
+        &self, 
+        name: ManagedBuffer,
+        selling_price: BigUint,
+        uris: ManagedVec<ManagedBuffer>,
+        metadata_ipfs_cid: ManagedBuffer,
+        metadata_ipfs_file: ManagedBuffer,
+        amount_of_tokens: BigUint,
+        royalties: BigUint,
+        tags: ManagedBuffer,
+    ) {
+        require!(self.token_display_name().is_empty(), "The SFT token already created!");
+        require!(royalties <= ROYALTIES_MAX, "Royalties cannot exceed 100%!");
+        require!(
+            amount_of_tokens >= 1,
+            "Amount of tokens should be at least 1!"
+        );
+        require!(selling_price >= 0, "Selling price can not be less than 0!");
+
+        require!(!self.collection_token_id().is_empty(), "Token not issued!");
+
+        let metadata_key_name = ManagedBuffer::new_from_bytes(METADATA_KEY_NAME);
+        let tags_key_name = ManagedBuffer::new_from_bytes(TAGS_KEY_NAME);
+        let separator = ManagedBuffer::new_from_bytes(ATTR_SEPARATOR);
+        let metadata_slash = ManagedBuffer::new_from_bytes(URI_SLASH);
+
+        let mut attributes = ManagedBuffer::new();
+        attributes.append(&tags_key_name);
+        attributes.append(&tags);
+        attributes.append(&separator);
+        attributes.append(&metadata_key_name);
+        attributes.append(&metadata_ipfs_cid);
+        attributes.append(&metadata_slash);
+        attributes.append(&metadata_ipfs_file);
+
+        let hash_buffer = self.crypto().sha256(&attributes);
+        let attributes_hash = hash_buffer.as_managed_buffer();
+
+        let token_id = self.collection_token_id().get();
+
+        self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris);
+
+        self.token_display_name().set(name);
+        self.token_selling_price().set(selling_price);
     }
 }

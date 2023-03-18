@@ -1,3 +1,5 @@
+# TODO: remove, just for development
+
 USER_PEM="../../../walletKey.pem"
 PROXY="https://devnet-gateway.multiversx.com"
 CHAIN_ID="D"

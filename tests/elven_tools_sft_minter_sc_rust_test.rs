@@ -1,11 +1,15 @@
 use elven_tools_sft_minter_sc::{setup::Setup, storage::Storage, operations::Operations, *};
-use multiversx_sc::types::{Address, EsdtLocalRole};
-use multiversx_sc_scenario::{managed_buffer, rust_biguint, testing_framework::*, DebugApi};
+use multiversx_sc::{types::{Address, EsdtLocalRole, ManagedVec}};
+use multiversx_sc_scenario::{managed_buffer, managed_biguint, rust_biguint, managed_token_id, testing_framework::*, DebugApi};
 
 const WASM_PATH: &'static str = "output/elven_tools_sft_minter_sc.wasm";
 const USER_BALANCE: u64 = 1_000_000_000_000_000_000;
 const TOKEN_ID: &[u8] = "TSTN-000000".as_bytes();
-const TEST_ENTRY: &[u8] = "test".as_bytes();
+const TOKEN_DISPLAY_NAME: &[u8] = "TestToken".as_bytes();
+const URI: &[u8] = "https://ipfs.io/ipfs/12321eqewqeqw/1.png".as_bytes();
+const TAGS: &[u8] = "tag1,tag2,tag3".as_bytes();
+const METADATA_CID: &[u8] = "32423432ewqewqeqwe32432423".as_bytes();
+const METADATA_FILE: &[u8] = "metadata.json".as_bytes();
 
 struct ContractSetup<ContractObjBuilder>
 where
@@ -34,6 +38,7 @@ where
         b_mock
             .execute_tx(&owner_address, &sc_wrapper, &rust_zero, |sc| {
                 sc.init();
+                sc.collection_token_id().set(managed_token_id!(TOKEN_ID));
             })
             .assert_ok();
 
@@ -41,8 +46,6 @@ where
             sc_wrapper.address_ref(),
             TOKEN_ID,
             &[EsdtLocalRole::NftCreate,
-            EsdtLocalRole::Burn,
-            EsdtLocalRole::Mint,
             EsdtLocalRole::NftAddQuantity,
             EsdtLocalRole::NftBurn,][..],
         );
@@ -68,12 +71,28 @@ fn create_token_test() {
             &setup.contract_wrapper,
             &rust_biguint!(0u64),
             |sc| {
-                sc.create_token();
+                let mut uris_vec = ManagedVec::new();
+                uris_vec.push(managed_buffer!(URI));
+
+                sc.create_token(
+                  managed_buffer!(TOKEN_DISPLAY_NAME),
+                  managed_biguint!(1000000000000000000),
+                  uris_vec,
+                  managed_buffer!(METADATA_CID),
+                  managed_buffer!(METADATA_FILE),
+                  managed_biguint!(100000),
+                  managed_biguint!(100),
+                  managed_buffer!(TAGS),
+                );
 
                 assert_eq!(
-                    sc.create_token_testing().get(),
-                    managed_buffer!(TEST_ENTRY)
+                    sc.token_selling_price().get(),
+                    managed_biguint!(1000000000000000000)
                 );
+                assert_eq!(
+                  sc.token_display_name().get(),
+                  managed_buffer!(TOKEN_DISPLAY_NAME)
+              );
             },
         )
         .assert_ok();
