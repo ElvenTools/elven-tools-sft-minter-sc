@@ -1,0 +1,20 @@
+[package]
+name = "elven-tools-sft-minter-sc"
+version = "0.1.0"
+authors = ["Julian Ćwirko <julian.cwirko@gmail.com>"]
+edition = "2021"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies.multiversx-sc]
+version = "0.39.6"
+
+[dev-dependencies.multiversx-sc-scenario]
+version = "0.39.6"
+
+[dev-dependencies]
+num-bigint = "0.4.2"
+num-traits = "0.2"
+hex = "0.4"
