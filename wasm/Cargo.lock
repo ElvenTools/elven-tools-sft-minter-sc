@@ -44,17 +44,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "elven-tools-sft-minter-sc"
+name = "elven-tools-sft-minter"
 version = "0.1.0"
 dependencies = [
  "multiversx-sc",
 ]
 
 [[package]]
-name = "elven-tools-sft-minter-sc-wasm"
+name = "elven-tools-sft-minter-wasm"
 version = "0.1.0"
 dependencies = [
- "elven-tools-sft-minter-sc",
+ "elven-tools-sft-minter",
  "multiversx-sc-wasm-adapter",
 ]
 

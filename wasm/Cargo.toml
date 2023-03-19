@@ -1,5 +1,5 @@
 [package]
-name = "elven-tools-sft-minter-sc-wasm"
+name = "elven-tools-sft-minter-wasm"
 version = "0.1.0"
 authors = ["Julian Ćwirko <julian.cwirko@gmail.com>"]
 edition = "2021"
@@ -15,7 +15,7 @@ lto = true
 debug = false
 panic = "abort"
 
-[dependencies.elven-tools-sft-minter-sc]
+[dependencies.elven-tools-sft-minter]
 path = ".."
 
 [dependencies.multiversx-sc-wasm-adapter]

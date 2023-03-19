@@ -97,12 +97,12 @@ pub trait Setup: storage::Storage {
         &self, 
         name: ManagedBuffer,
         selling_price: BigUint,
-        uris: ManagedVec<ManagedBuffer>,
         metadata_ipfs_cid: ManagedBuffer,
         metadata_ipfs_file: ManagedBuffer,
         amount_of_tokens: BigUint,
         royalties: BigUint,
         tags: ManagedBuffer,
+        uris: MultiValueEncoded<ManagedBuffer>
     ) {
         require!(self.token_display_name().is_empty(), "The SFT token already created!");
         require!(royalties <= ROYALTIES_MAX, "Royalties cannot exceed 100%!");
@@ -133,7 +133,9 @@ pub trait Setup: storage::Storage {
 
         let token_id = self.collection_token_id().get();
 
-        self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris);
+        let uris_vec = uris.into_vec_of_buffers();
+
+        self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris_vec);
 
         self.token_display_name().set(name);
         self.token_selling_price().set(selling_price);

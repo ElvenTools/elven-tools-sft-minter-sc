@@ -1,5 +1,5 @@
 [package]
-name = "elven-tools-sft-minter-sc"
+name = "elven-tools-sft-minter"
 version = "0.1.0"
 authors = ["Julian Ćwirko <julian.cwirko@gmail.com>"]
 edition = "2021"

@@ -8,7 +8,7 @@
             "short": "rustc 1.70.0-nightly (13afbdaa0 2023-03-17)"
         },
         "contractCrate": {
-            "name": "elven-tools-sft-minter-sc",
+            "name": "elven-tools-sft-minter",
             "version": "0.1.0"
         },
         "framework": {
@@ -23,7 +23,27 @@
     },
     "endpoints": [
         {
-            "name": "getSftTokenId",
+            "name": "getTokenSellingPrice",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getTokenDisplayName",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "getCollectionTokenId",
             "mutability": "readonly",
             "inputs": [],
             "outputs": [
@@ -72,7 +92,41 @@
             "name": "createToken",
             "onlyOwner": true,
             "mutability": "mutable",
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "selling_price",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "metadata_ipfs_cid",
+                    "type": "bytes"
+                },
+                {
+                    "name": "metadata_ipfs_file",
+                    "type": "bytes"
+                },
+                {
+                    "name": "amount_of_tokens",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "royalties",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "tags",
+                    "type": "bytes"
+                },
+                {
+                    "name": "uris",
+                    "type": "variadic<bytes>",
+                    "multi_arg": true
+                }
+            ],
             "outputs": []
         },
         {
