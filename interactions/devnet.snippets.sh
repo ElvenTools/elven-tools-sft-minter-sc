@@ -3,6 +3,7 @@ USER_PEM="../../../walletKey.pem"
 PROXY="https://devnet-gateway.multiversx.com"
 CHAIN_ID="D"
 
+ASSETS_URIS_CONCAT=""
 SC_ADDRESS=$(mxpy data load --key=address-devnet)
 # Built in price for token issuance
 ISSUE_COLLECTION_TOKEN_COST=50000000000000000
@@ -32,7 +33,7 @@ setLocalRoles() {
 
 # Create SFT token
 createToken() {
-  read -p "TOKEN_DISPLAY_NAME: Enter token display name (Alphanumeric characters only): " TOKEN_DISPLAY_NAME
+  read -p "TOKEN_DISPLAY_NAME: Enter token display name: " TOKEN_DISPLAY_NAME
   read -p "TOKEN_SELLING_PRICE: Enter token selling price (1 EGLD = 1000000000000000000): " TOKEN_SELLING_PRICE
   read -p "METADATA_IPFS_CID: Enter the the metadata file CID from IPFS: " METADATA_IPFS_CID
   read -p "METADATA_IPFS_FILE_NAME: Enter the the metadata file name uploaded using IPFS (ex: metadata.json): " METADATA_IPFS_FILE_NAME
@@ -48,5 +49,5 @@ createToken() {
     ASSETS_URIS_CONCAT=${ASSETS_URIS_CONCAT:+$ASSETS_URIS_CONCAT }str:$URI
   done
 
-  mxpy --verbose contract call ${SC_ADDRESS} --function="createToken" --chain=${CHAIN_ID} --pem=${USER_PEM} --gas-limit=20000000 --proxy=${PROXY} --recall-nonce --arguments str:${TOKEN_DISPLAY_NAME} ${TOKEN_SELLING_PRICE} str:${METADATA_IPFS_CID} str:${METADATA_IPFS_FILE_NAME} ${INITIAL_AMOUNT_OF_TOKENS} ${ROYALTIES} str:${TAGS} ${ASSETS_URIS_CONCAT} --send
+  mxpy --verbose contract call ${SC_ADDRESS} --function="createToken" --chain=${CHAIN_ID} --pem=${USER_PEM} --gas-limit=20000000 --proxy=${PROXY} --recall-nonce --arguments str:"${TOKEN_DISPLAY_NAME}" ${TOKEN_SELLING_PRICE} str:${METADATA_IPFS_CID} str:${METADATA_IPFS_FILE_NAME} ${INITIAL_AMOUNT_OF_TOKENS} ${ROYALTIES} str:"${TAGS}" ${ASSETS_URIS_CONCAT} --send
 }
