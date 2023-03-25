@@ -2,10 +2,10 @@
     "buildInfo": {
         "rustc": {
             "version": "1.70.0-nightly",
-            "commitHash": "13afbdaa0655dda23d7129e59ac48f1ec88b2084",
-            "commitDate": "2023-03-17",
+            "commitHash": "8be3c2bda6b683f87b24714ba595e8b04faef54c",
+            "commitDate": "2023-03-24",
             "channel": "Nightly",
-            "short": "rustc 1.70.0-nightly (13afbdaa0 2023-03-17)"
+            "short": "rustc 1.70.0-nightly (8be3c2bda 2023-03-24)"
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
@@ -13,7 +13,7 @@
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.39.6"
+            "version": "0.39.7"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -23,22 +23,17 @@
     },
     "endpoints": [
         {
-            "name": "getTokenSellingPrice",
+            "name": "getTokenPriceTag",
             "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
+            "inputs": [
                 {
-                    "type": "BigUint"
+                    "name": "token_nonce",
+                    "type": "u64"
                 }
-            ]
-        },
-        {
-            "name": "getTokenDisplayName",
-            "mutability": "readonly",
-            "inputs": [],
+            ],
             "outputs": [
                 {
-                    "type": "bytes"
+                    "type": "TokenPriceTag"
                 }
             ]
         },
@@ -114,6 +109,10 @@
                     "type": "BigUint"
                 },
                 {
+                    "name": "max_per_address",
+                    "type": "BigUint"
+                },
+                {
                     "name": "royalties",
                     "type": "BigUint"
                 },
@@ -132,11 +131,45 @@
         {
             "name": "buy",
             "mutability": "mutable",
-            "inputs": [],
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "amount_of_tokens",
+                    "type": "u32"
+                },
+                {
+                    "name": "nonce",
+                    "type": "u64"
+                }
+            ],
             "outputs": []
         }
     ],
     "events": [],
     "hasCallback": true,
-    "types": {}
+    "types": {
+        "TokenPriceTag": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "display_name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "price",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "max_per_address",
+                    "type": "BigUint"
+                }
+            ]
+        }
+    }
 }

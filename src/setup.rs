@@ -2,6 +2,7 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 use crate::storage;
+use crate::storage::TokenPriceTag;
 
 const ROYALTIES_MAX: u32 = 10_000;
 const METADATA_KEY_NAME: &[u8] = "metadata:".as_bytes();
@@ -100,11 +101,11 @@ pub trait Setup: storage::Storage {
         metadata_ipfs_cid: ManagedBuffer,
         metadata_ipfs_file: ManagedBuffer,
         amount_of_tokens: BigUint,
+        max_per_address: BigUint,
         royalties: BigUint,
         tags: ManagedBuffer,
         uris: MultiValueEncoded<ManagedBuffer>
     ) {
-        require!(self.token_display_name().is_empty(), "The SFT token already created!");
         require!(royalties <= ROYALTIES_MAX, "Royalties cannot exceed 100%!");
         require!(
             amount_of_tokens >= 1,
@@ -135,9 +136,13 @@ pub trait Setup: storage::Storage {
 
         let uris_vec = uris.into_vec_of_buffers();
 
-        self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris_vec);
+        let nonce = self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris_vec);
 
-        self.token_display_name().set(name);
-        self.token_selling_price().set(selling_price);
+        self.token_price_tag(nonce).set(TokenPriceTag {
+          display_name: name,
+          nonce,
+          price: selling_price,
+          max_per_address
+        });
     }
 }

@@ -61,9 +61,10 @@ where
 }
 
 #[test]
-fn create_token_test() {
+fn create_and_buy_token_test() {
     let mut setup = ContractSetup::new(elven_tools_sft_minter::contract_obj);
     let owner_address = setup.owner_address.clone();
+    let user_address = setup.user_address.clone();
 
     setup
         .b_mock
@@ -80,24 +81,41 @@ fn create_token_test() {
 
                 sc.create_token(
                   managed_buffer!(TOKEN_DISPLAY_NAME),
-                  managed_biguint!(1000000000000000000),
+                  managed_biguint!(100_000_000_000_000_000),
                   managed_buffer!(METADATA_CID),
                   managed_buffer!(METADATA_FILE),
                   managed_biguint!(100000),
+                  managed_biguint!(10),
                   managed_biguint!(100),
                   managed_buffer!(TAGS),
                   uris_multi
                 );
 
                 assert_eq!(
-                    sc.token_selling_price().get(),
-                    managed_biguint!(1000000000000000000)
+                    sc.token_price_tag(01u64).get().price,
+                    managed_biguint!(100_000_000_000_000_000)
                 );
                 assert_eq!(
-                  sc.token_display_name().get(),
+                  sc.token_price_tag(01u64).get().display_name,
                   managed_buffer!(TOKEN_DISPLAY_NAME)
                 );
             },
         )
         .assert_ok();
+
+    setup
+        .b_mock
+        .execute_tx(
+            &user_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(200_000_000_000_000_000),
+            |sc| {
+              sc.buy(2u32, 01u64);
+            },
+        )
+        .assert_ok();
+
+    setup
+        .b_mock
+        .check_egld_balance(&owner_address, &rust_biguint!(200_000_000_000_000_000))
 }

@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                            8
+// Endpoints:                            7
 // Async Callback:                       1
-// Total number of exported functions:  10
+// Total number of exported functions:   9
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -18,8 +18,7 @@ multiversx_sc_wasm_adapter::panic_handler!();
 multiversx_sc_wasm_adapter::endpoints! {
     elven_tools_sft_minter
     (
-        getTokenSellingPrice
-        getTokenDisplayName
+        getTokenPriceTag
         getCollectionTokenId
         getCollectionTokenName
         issueToken

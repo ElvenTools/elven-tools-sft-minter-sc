@@ -9,10 +9,10 @@ publish = false
 path = "src/lib.rs"
 
 [dependencies.multiversx-sc]
-version = "0.39.6"
+version = "0.39.7"
 
 [dev-dependencies.multiversx-sc-scenario]
-version = "0.39.6"
+version = "0.39.7"
 
 [dev-dependencies]
 num-bigint = "0.4.2"
