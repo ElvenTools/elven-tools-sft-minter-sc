@@ -6,18 +6,17 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 
 - issue collection
 - configure and manage a collection
-- mint and send SFTs (payment with EGLD)
-- burn and add quantity
+- limit per one address
+- mint, create, buy and send SFTs (payment with EGLD)
+- claim funds from smart contract
 
 ## For later
 
-- allow lists
-- more configuration per address
-- what have you... let me know
+- [Kanban board](https://github.com/orgs/ElvenTools/projects/8/views/1)
 
 ## How to use it
 
-The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). You can find all the guidance here: [TODO: add docs]()
+The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). You can find all the guidance here: [SFT Workflow jump start](https://www.elven.tools/docs/jump-start.html#sft-minter-tl%3Bdr)
 
 You could also use [mxpy](https://docs.multiversx.com/sdk-and-tools/sdk-py/mxpy-cli) tool. 
 
@@ -25,27 +24,27 @@ Also check the interaction snippets included in the repository. Remember to set 
 
 In the latest version of VSCode MultiversX IDE extension, there is no more an option to run snippets, but you  can do this by hand in the terminal (in the project root run): 
 
-deploy:
+**deploy**:
 ```
 . interactions/devnet.snippets.sh && deploy
 ```
 
-issueToken:
+**issueToken**:
 ```
 . interactions/devnet.snippets.sh && issueToken
 ```
 
-setLocalRoles:
+**setLocalRoles**:
 ```
 . interactions/devnet.snippets.sh && setLocalRoles
 ```
 
-createToken:
+**createToken**:
 ```
 . interactions/devnet.snippets.sh && createToken
 ```
 
-buy:
+**buy**:
 ```
 . interactions/devnet.snippets.sh && buy
 ```
@@ -59,12 +58,15 @@ You will find tests in tests/elven_tools_sft_minter_sc_rust_test.rs. To run a te
 cargo test --test elven_tools_sft_minter_sc_rust_test
 ```
 
-Tests need some more love.
+(Tests need some more love)
 
-## Contact and other tools
+## Contact
 
-- [julian.io](https://www.julian.io)
+- [Julian.io](https://www.julian.io)
+
+## Other tools
+
 - [Elven Tools](https://www.elven.tools)
 - [useElven](https://www.useelven.com)
-- [elven.js](https://www.elvenjs.com)W
+- [elven.js](https://www.elvenjs.com)
 - [Buildo](https://github.com/xdevguild/buildo-begins)

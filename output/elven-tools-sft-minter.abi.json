@@ -13,7 +13,7 @@
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.39.7"
+            "version": "0.39.8"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -144,6 +144,13 @@
                     "type": "u64"
                 }
             ],
+            "outputs": []
+        },
+        {
+            "name": "claimScFunds",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
             "outputs": []
         }
     ],

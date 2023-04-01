@@ -61,11 +61,12 @@ where
 }
 
 #[test]
-fn create_and_buy_token_test() {
+fn sft_minter_test() {
     let mut setup = ContractSetup::new(elven_tools_sft_minter::contract_obj);
     let owner_address = setup.owner_address.clone();
     let user_address = setup.user_address.clone();
 
+    // Create token test
     setup
         .b_mock
         .execute_tx(
@@ -103,6 +104,7 @@ fn create_and_buy_token_test() {
         )
         .assert_ok();
 
+    // Buy token test
     setup
         .b_mock
         .execute_tx(
@@ -117,5 +119,22 @@ fn create_and_buy_token_test() {
 
     setup
         .b_mock
-        .check_egld_balance(&owner_address, &rust_biguint!(200_000_000_000_000_000))
+        .check_egld_balance(&owner_address, &rust_biguint!(200_000_000_000_000_000));
+
+    // Claim SC funds test
+    setup
+        .b_mock
+        .execute_tx(
+            &owner_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(200_000_000_000_000_000),
+            |sc| {
+              sc.claim_sc_funds();
+            },
+        )
+        .assert_ok();
+
+    setup
+        .b_mock
+        .check_egld_balance(&setup.contract_wrapper.address_ref(), &rust_biguint!(0));
 }

@@ -187,6 +187,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2382f75942f4b3be3690fe4f86365e9c853c1587d6ee58212cebf6e2a9ccd101"
 
 [[package]]
+name = "convert_case"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ec182b0ca2f35d8fc196cf3404988fd8b8c739a4d270ff118a398feb0cbec1ca"
+dependencies = [
+ "unicode-segmentation",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -532,9 +541,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-chain-vm"
-version = "0.1.7"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "090b068fea4a7b3142226293f511e7e510fa3ae5eac6df079adc5b99cd01827e"
+checksum = "c910bb4a2c79b09f198ab9243e2eb6b201eb61e1284a5cb082ef96947897cf44"
 dependencies = [
  "bech32",
  "ed25519-dalek",
@@ -555,9 +564,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc"
-version = "0.39.7"
+version = "0.39.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75218a09f6b77f272f6a74689c0abc6152588674f7aa264368156cd661245c98"
+checksum = "31561133b64837f1a7835ae4ba96383ab07d9ce401e703ad2a37aef45789a1e7"
 dependencies = [
  "bitflags",
  "hashbrown 0.13.2",
@@ -593,9 +602,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-derive"
-version = "0.39.7"
+version = "0.39.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "768007b88e43df8120efa562bf4e79846b97043db92b860877fa3b7e9af5f771"
+checksum = "23187464277575f8055c92cffbd664592825591f5cebb8dae038d2af04c5e639"
 dependencies = [
  "hex",
  "proc-macro2",
@@ -606,13 +615,14 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-meta"
-version = "0.39.7"
+version = "0.39.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8fc78a71e8ccd4baa3ef5167a352fc514550fc065205a2315e14b435c57f9de"
+checksum = "5acc44304c9df5d6931cee1afb297ed1decccdf785c2eb2769e0fa836a3c164e"
 dependencies = [
  "clap",
  "colored",
  "common-path",
+ "convert_case",
  "lazy_static",
  "multiversx-sc",
  "pathdiff",
@@ -625,9 +635,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-scenario"
-version = "0.39.7"
+version = "0.39.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc1445663553b6d63c8ff01bbd1f7b23212a3a68615a19f128022096c1895680"
+checksum = "c181a78e3feb29038f1999f6415bbda6c1bd99e17fa290d4324f3847980f4780"
 dependencies = [
  "colored",
  "hex",
@@ -1080,6 +1090,12 @@ name = "unicode-ident"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84a22b9f218b40614adcb3f4ff08b703773ad44fa9423e4e0d346d5db86e4ebc"
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1dd624098567895118886609431a7c3b8f516e41d30e0643f03d94592a147e36"
 
 [[package]]
 name = "unicode-xid"
