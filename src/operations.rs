@@ -54,4 +54,19 @@ pub trait Operations: storage::Storage {
               .get_sc_balance(&EgldOrEsdtTokenIdentifier::egld(), 0),
       );
   }
+
+  #[view(getPrice)]
+  fn get_price(&self, token_nonce: u64) -> BigUint {
+    self.token_price_tag(token_nonce).get().price
+  }
+
+  #[view(getTokenDisplayName)]
+  fn get_token_display_name(&self, token_nonce: u64) -> ManagedBuffer {
+    self.token_price_tag(token_nonce).get().display_name
+  }
+
+  #[view(getMaxTokensPerAddress)]
+  fn get_max_tokens_per_address(&self, token_nonce: u64) -> BigUint {
+    self.token_price_tag(token_nonce).get().max_per_address
+  }
 }

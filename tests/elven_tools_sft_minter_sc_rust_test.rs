@@ -137,4 +137,50 @@ fn sft_minter_test() {
     setup
         .b_mock
         .check_egld_balance(&setup.contract_wrapper.address_ref(), &rust_biguint!(0));
+
+    // Get price query 
+    setup
+        .b_mock
+        .execute_query(
+          &setup.contract_wrapper,
+          |sc| {
+            let query_result = sc.get_price(01u64);
+
+            assert_eq!(
+              query_result,
+              managed_biguint!(100_000_000_000_000_000)
+            );
+          },
+        )
+        .assert_ok();
+
+    setup
+      .b_mock
+      .execute_query(
+        &setup.contract_wrapper,
+        |sc| {
+          let query_result = sc.get_token_display_name(01u64);
+
+          assert_eq!(
+            query_result,
+            managed_buffer!(TOKEN_DISPLAY_NAME)
+          );
+        },
+      )
+      .assert_ok();
+
+    setup
+      .b_mock
+      .execute_query(
+        &setup.contract_wrapper,
+        |sc| {
+          let query_result = sc.get_max_tokens_per_address(01u64);
+
+          assert_eq!(
+            query_result,
+            managed_biguint!(10)
+          );
+        },
+      )
+      .assert_ok();
 }

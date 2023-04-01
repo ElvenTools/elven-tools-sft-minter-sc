@@ -11,10 +11,6 @@ pub struct TokenPriceTag<M: ManagedTypeApi> {
 
 #[multiversx_sc::module]
 pub trait Storage {
-    #[view(getTokenPriceTag)]
-    #[storage_mapper("tokenPriceTag")]
-    fn token_price_tag(&self, token_nonce: u64) -> SingleValueMapper<TokenPriceTag<Self::Api>>;
-
     #[view(getCollectionTokenId)]
     #[storage_mapper("collectionTokenId")]
     fn collection_token_id(&self) -> SingleValueMapper<TokenIdentifier>;
@@ -22,4 +18,7 @@ pub trait Storage {
     #[view(getCollectionTokenName)]
     #[storage_mapper("collectionTokenName")]
     fn collection_token_name(&self) -> SingleValueMapper<ManagedBuffer>;
+
+    #[storage_mapper("tokenPriceTag")]
+    fn token_price_tag(&self, token_nonce: u64) -> SingleValueMapper<TokenPriceTag<Self::Api>>;
 }

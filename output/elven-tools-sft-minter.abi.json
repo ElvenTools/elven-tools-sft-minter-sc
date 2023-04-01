@@ -23,21 +23,6 @@
     },
     "endpoints": [
         {
-            "name": "getTokenPriceTag",
-            "mutability": "readonly",
-            "inputs": [
-                {
-                    "name": "token_nonce",
-                    "type": "u64"
-                }
-            ],
-            "outputs": [
-                {
-                    "type": "TokenPriceTag"
-                }
-            ]
-        },
-        {
             "name": "getCollectionTokenId",
             "mutability": "readonly",
             "inputs": [],
@@ -152,31 +137,54 @@
             "mutability": "mutable",
             "inputs": [],
             "outputs": []
-        }
-    ],
-    "events": [],
-    "hasCallback": true,
-    "types": {
-        "TokenPriceTag": {
-            "type": "struct",
-            "fields": [
+        },
+        {
+            "name": "getPrice",
+            "mutability": "readonly",
+            "inputs": [
                 {
-                    "name": "display_name",
-                    "type": "bytes"
-                },
-                {
-                    "name": "nonce",
+                    "name": "token_nonce",
                     "type": "u64"
-                },
+                }
+            ],
+            "outputs": [
                 {
-                    "name": "price",
                     "type": "BigUint"
-                },
+                }
+            ]
+        },
+        {
+            "name": "getTokenDisplayName",
+            "mutability": "readonly",
+            "inputs": [
                 {
-                    "name": "max_per_address",
+                    "name": "token_nonce",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "getMaxTokensPerAddress",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
                     "type": "BigUint"
                 }
             ]
         }
-    }
+    ],
+    "events": [],
+    "hasCallback": true,
+    "types": {}
 }
