@@ -16,7 +16,7 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 
 ## How to use it
 
-The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). You can find all the guidance here: [SFT Workflow jump start](https://www.elven.tools/docs/jump-start.html#sft-minter-tl%3Bdr)
+The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). You can find all the guidance here: [SFT Workflow jump start](https://www.elven.tools/docs/jump-start.html#sft-minter-tl%3Bdr). Check out short walkthrough video: [youtu.be/rMF3ItijHUA](https://youtu.be/rMF3ItijHUA).
 
 You could also use [mxpy](https://docs.multiversx.com/sdk-and-tools/sdk-py/mxpy-cli) tool. 
 
