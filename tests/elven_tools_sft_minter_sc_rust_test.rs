@@ -174,7 +174,7 @@ fn sft_minter_test() {
       .execute_query(
         &setup.contract_wrapper,
         |sc| {
-          let query_result = sc.get_max_tokens_per_address(01u64);
+          let query_result = sc.get_max_amount_per_address(01u64);
 
           assert_eq!(
             query_result,

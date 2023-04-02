@@ -169,7 +169,7 @@
             ]
         },
         {
-            "name": "getMaxTokensPerAddress",
+            "name": "getMaxAmountPerAddress",
             "mutability": "readonly",
             "inputs": [
                 {

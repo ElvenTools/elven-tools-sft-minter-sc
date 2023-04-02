@@ -27,7 +27,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         claimScFunds
         getPrice
         getTokenDisplayName
-        getMaxTokensPerAddress
+        getMaxAmountPerAddress
         callBack
     )
 }

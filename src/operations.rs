@@ -65,8 +65,8 @@ pub trait Operations: storage::Storage {
     self.token_price_tag(token_nonce).get().display_name
   }
 
-  #[view(getMaxTokensPerAddress)]
-  fn get_max_tokens_per_address(&self, token_nonce: u64) -> BigUint {
+  #[view(getMaxAmountPerAddress)]
+  fn get_max_amount_per_address(&self, token_nonce: u64) -> BigUint {
     self.token_price_tag(token_nonce).get().max_per_address
   }
 }
