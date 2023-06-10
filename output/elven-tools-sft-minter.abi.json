@@ -1,19 +1,19 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.70.0-nightly",
-            "commitHash": "8be3c2bda6b683f87b24714ba595e8b04faef54c",
-            "commitDate": "2023-03-24",
+            "version": "1.72.0-nightly",
+            "commitHash": "8b35c0bb0f833c0077dc57006eb317edde2a2d1e",
+            "commitDate": "2023-06-08",
             "channel": "Nightly",
-            "short": "rustc 1.70.0-nightly (8be3c2bda 2023-03-24)"
+            "short": "rustc 1.72.0-nightly (8b35c0bb0 2023-06-08)"
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.1.0"
+            "version": "0.2.0"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.39.8"
+            "version": "0.41.2"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -136,6 +136,22 @@
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "setNewPrice",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "new_price",
+                    "type": "BigUint"
+                }
+            ],
             "outputs": []
         },
         {

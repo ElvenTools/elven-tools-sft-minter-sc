@@ -9,6 +9,7 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 - limit per one address
 - mint, create, buy and send SFTs (payment with EGLD)
 - claim funds from smart contract
+- change the price
 
 ## For later
 
@@ -16,38 +17,25 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 
 ## How to use it
 
-The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). You can find all the guidance here: [SFT Workflow jump start](https://www.elven.tools/docs/jump-start.html#sft-minter-tl%3Bdr). Check out short walkthrough video: [youtu.be/rMF3ItijHUA](https://youtu.be/rMF3ItijHUA).
+The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). 
+
+Steps with the CLI:
+1. `npm install elven-tools -g`
+2. `elven-tools derive-pem`
+3. `elven-tools deploy sft-minter`
+4. `elven-tools sft-minter issue-collection-token`
+5. `elven-tools sft-minter set-roles`
+7. `elven-tools sft-minter create`  
+---then---  
+8. `elven-tools sft-minter buy`
+9. `elven-tools sft-minter set-new-price`  
+(more to come, check the kanban todo [board](https://github.com/orgs/ElvenTools/projects/8))
+
+You can also use it with `npx` without global installation.
+
+You can find all the guidance here: [SFT Workflow jump start](https://www.elven.tools/docs/jump-start.html#sft-minter-tl%3Bdr). Check out short walkthrough video: [youtu.be/rMF3ItijHUA](https://youtu.be/rMF3ItijHUA).
 
 You could also use [mxpy](https://docs.multiversx.com/sdk-and-tools/sdk-py/mxpy-cli) tool. 
-
-Also check the interaction snippets included in the repository. Remember to set the path to your PEM file. You can do this in `devnet.snippets.sh` file.
-
-In the latest version of VSCode MultiversX IDE extension, there is no more an option to run snippets, but you  can do this by hand in the terminal (in the project root run): 
-
-**deploy**:
-```
-. interactions/devnet.snippets.sh && deploy
-```
-
-**issueToken**:
-```
-. interactions/devnet.snippets.sh && issueToken
-```
-
-**setLocalRoles**:
-```
-. interactions/devnet.snippets.sh && setLocalRoles
-```
-
-**createToken**:
-```
-. interactions/devnet.snippets.sh && createToken
-```
-
-**buy**:
-```
-. interactions/devnet.snippets.sh && buy
-```
 
 The code is open source, and there is an ABI file.
 
@@ -66,7 +54,7 @@ cargo test --test elven_tools_sft_minter_sc_rust_test
 
 ## Other tools
 
-- [Elven Tools](https://www.elven.tools)
-- [useElven](https://www.useelven.com)
-- [elven.js](https://www.elvenjs.com)
-- [Buildo](https://github.com/xdevguild/buildo-begins)
+- [Elven Tools](https://www.elven.tools) - SFTs and NFTs tools on the MultiversX blockchain - smart contracts, cli and dapp template
+- [useElven](https://www.useelven.com) - React hooks to be used with Next.js or standalone React
+- [elven.js](https://www.elvenjs.com) - The browser only lite MultiversX SDK, no build steps required. Works with static websites.
+- [Buildo Begins](https://github.com/xdevguild/buildo-begins) - All things MultiversX CLI tool.

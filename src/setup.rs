@@ -22,14 +22,17 @@ pub trait Setup: storage::Storage {
         collection_token_ticker: ManagedBuffer,
     ) {
         let issue_cost = self.call_value().egld_value();
-        require!(self.collection_token_id().is_empty(), "Token already issued!");
+        require!(
+            self.collection_token_id().is_empty(),
+            "Token already issued!"
+        );
 
         self.collection_token_name().set(&collection_token_name);
 
         self.send()
             .esdt_system_sc_proxy()
             .issue_semi_fungible(
-                issue_cost,
+                issue_cost.clone_value(),
                 &collection_token_name,
                 &collection_token_ticker,
                 SemiFungibleTokenProperties {
@@ -82,7 +85,7 @@ pub trait Setup: storage::Storage {
                 (&[
                     EsdtLocalRole::NftCreate,
                     EsdtLocalRole::NftAddQuantity,
-                    EsdtLocalRole::NftBurn
+                    EsdtLocalRole::NftBurn,
                 ][..])
                     .into_iter()
                     .cloned(),
@@ -91,11 +94,11 @@ pub trait Setup: storage::Storage {
             .call_and_exit();
     }
 
-    // Create actual SFT with amount, assets etc. 
+    // Create actual SFT with amount, assets etc.
     #[only_owner]
     #[endpoint(createToken)]
     fn create_token(
-        &self, 
+        &self,
         name: ManagedBuffer,
         selling_price: BigUint,
         metadata_ipfs_cid: ManagedBuffer,
@@ -104,7 +107,7 @@ pub trait Setup: storage::Storage {
         max_per_address: BigUint,
         royalties: BigUint,
         tags: ManagedBuffer,
-        uris: MultiValueEncoded<ManagedBuffer>
+        uris: MultiValueEncoded<ManagedBuffer>,
     ) {
         require!(royalties <= ROYALTIES_MAX, "Royalties cannot exceed 100%!");
         require!(
@@ -136,13 +139,21 @@ pub trait Setup: storage::Storage {
 
         let uris_vec = uris.into_vec_of_buffers();
 
-        let nonce = self.send().esdt_nft_create(&token_id, &amount_of_tokens, &name, &royalties, &attributes_hash, &attributes, &uris_vec);
+        let nonce = self.send().esdt_nft_create(
+            &token_id,
+            &amount_of_tokens,
+            &name,
+            &royalties,
+            &attributes_hash,
+            &attributes,
+            &uris_vec,
+        );
 
         self.token_price_tag(nonce).set(TokenPriceTag {
-          display_name: name,
-          nonce,
-          price: selling_price,
-          max_per_address
+            display_name: name,
+            nonce,
+            price: selling_price,
+            max_per_address,
         });
     }
 }
