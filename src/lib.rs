@@ -10,5 +10,7 @@ pub mod operations;
 #[multiversx_sc::contract]
 pub trait ElvenToolsSftMinter: storage::Storage + setup::Setup + operations::Operations {
     #[init]
-    fn init(&self) {}
+    fn init(&self) {
+      self.paused().set_if_empty(true);
+    }
 }

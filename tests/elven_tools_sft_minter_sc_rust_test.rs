@@ -1,11 +1,11 @@
 use elven_tools_sft_minter::{operations::Operations, setup::Setup, storage::Storage, *};
 use multiversx_sc::types::{Address, EsdtLocalRole, ManagedVec, MultiValueEncoded};
 use multiversx_sc_scenario::{
-    managed_biguint, managed_buffer, managed_token_id, rust_biguint, testing_framework::*, DebugApi,
+    managed_biguint, managed_buffer, managed_token_id, managed_address, rust_biguint, testing_framework::*, DebugApi,
 };
 
 const WASM_PATH: &'static str = "output/elven_tools_sft_minter.wasm";
-const USER_BALANCE: u64 = 1_000_000_000_000_000_000;
+const USER_BALANCE: u64 = 6_000_000_000_000_000_000;
 const TOKEN_ID: &[u8] = "TSTN-000000".as_bytes();
 const TOKEN_DISPLAY_NAME: &[u8] = "TestToken".as_bytes();
 const URI: &[u8] = "https://ipfs.io/ipfs/12321eqewqeqw/1.png".as_bytes();
@@ -70,7 +70,7 @@ fn sft_minter_test() {
     let owner_address = setup.owner_address.clone();
     let user_address = setup.user_address.clone();
 
-    // Create token test
+    // Create token
     setup
         .b_mock
         .execute_tx(
@@ -96,19 +96,23 @@ fn sft_minter_test() {
                     uris_multi,
                 );
 
+                // Allow to buy
+                sc.start_selling();
+
+                assert_eq!(sc.paused().is_empty(), true);
                 assert_eq!(
-                    sc.token_price_tag(01u64).get().price,
+                    sc.token_tag(01u64).get().price,
                     managed_biguint!(100_000_000_000_000_000)
                 );
                 assert_eq!(
-                    sc.token_price_tag(01u64).get().display_name,
+                    sc.token_tag(01u64).get().display_name,
                     managed_buffer!(TOKEN_DISPLAY_NAME)
                 );
             },
         )
         .assert_ok();
 
-    // Buy token test
+    // Buy token
     setup
         .b_mock
         .execute_tx(
@@ -125,7 +129,17 @@ fn sft_minter_test() {
         .b_mock
         .check_egld_balance(&owner_address, &rust_biguint!(200_000_000_000_000_000));
 
-    // Claim SC funds test
+    // After buying the user should have 2 tokens per address
+    setup
+        .b_mock
+        .execute_query(&setup.contract_wrapper, |sc| {
+            let query_result = sc.tokens_per_address_total(01u64, &managed_address!(&user_address)).get();
+
+            assert_eq!(query_result, managed_biguint!(2));
+        })
+        .assert_ok();
+
+    // Claim SC funds
     setup
         .b_mock
         .execute_tx(
@@ -192,5 +206,41 @@ fn sft_minter_test() {
 
             assert_eq!(query_result, managed_biguint!(200_000_000_000_000_000));
         })
+        .assert_ok();
+
+    // Change the max tokens per address limit
+    setup
+        .b_mock
+        .execute_tx(
+            &owner_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(0u64),
+            |sc| {
+                sc.set_new_tokens_limit_per_address(01u64, managed_biguint!(20));
+            },
+        )
+        .assert_ok();
+
+    setup
+        .b_mock
+        .execute_query(&setup.contract_wrapper, |sc| {
+            let query_result = sc.get_max_amount_per_address(01u64);
+
+            assert_eq!(query_result, managed_biguint!(20));
+        })
+        .assert_ok();
+
+    // Now I should be able to buy more than 10 tokens with a new price of 2egld per token
+    // I can buy max 18 tokens at once even if the limit is 20, because I already have 2
+    setup
+        .b_mock
+        .execute_tx(
+            &user_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(3_600_000_000_000_000_000),
+            |sc| {
+                sc.buy(18u32, 01u64);
+            },
+        )
         .assert_ok();
 }

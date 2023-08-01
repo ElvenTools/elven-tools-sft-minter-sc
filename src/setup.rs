@@ -2,7 +2,7 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 use crate::storage;
-use crate::storage::TokenPriceTag;
+use crate::storage::TokenTag;
 
 const ROYALTIES_MAX: u32 = 10_000;
 const METADATA_KEY_NAME: &[u8] = "metadata:".as_bytes();
@@ -149,7 +149,7 @@ pub trait Setup: storage::Storage {
             &uris_vec,
         );
 
-        self.token_price_tag(nonce).set(TokenPriceTag {
+        self.token_tag(nonce).set(TokenTag {
             display_name: name,
             nonce,
             price: selling_price,

@@ -1,3 +1,9 @@
+### [0.3.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.3.0) (2023-08-01)
+- add pause/start buying SFTs endpoint
+- add change max tokens per address endpoint
+- respect max tokens per nonce and address setting when buying
+- update `multiversx-sc` libraries
+
 ### [0.2.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.2.0) (2023-05-10)
 - add a new owner-only endpoint to change the price (`setNewPrice`)
 - remove sh interaction snippets because it won't be supported, please use the [CLI](https://www.npmjs.com/package/elven-tools)

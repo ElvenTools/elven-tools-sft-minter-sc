@@ -1,19 +1,19 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.72.0-nightly",
-            "commitHash": "8b35c0bb0f833c0077dc57006eb317edde2a2d1e",
-            "commitDate": "2023-06-08",
+            "version": "1.73.0-nightly",
+            "commitHash": "db7ff98a72f3e742b641f9cb16d0e8c285e87e9b",
+            "commitDate": "2023-07-31",
             "channel": "Nightly",
-            "short": "rustc 1.72.0-nightly (8b35c0bb0 2023-06-08)"
+            "short": "rustc 1.73.0-nightly (db7ff98a7 2023-07-31)"
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.2.0"
+            "version": "0.3.0"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.41.2"
+            "version": "0.42.0"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -39,6 +39,35 @@
             "outputs": [
                 {
                     "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "getTokensPerAddressTotal",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
                 }
             ]
         },
@@ -152,6 +181,36 @@
                     "type": "BigUint"
                 }
             ],
+            "outputs": []
+        },
+        {
+            "name": "setNewTokensLimitPerAddress",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "limit",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "pauseSelling",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "startSelling",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
             "outputs": []
         },
         {
