@@ -139,7 +139,7 @@ pub trait Setup: storage::Storage {
 
         let uris_vec = uris.into_vec_of_buffers();
 
-        let nonce = self.send().esdt_nft_create(
+        let token_nonce = self.send().esdt_nft_create(
             &token_id,
             &amount_of_tokens,
             &name,
@@ -149,11 +149,13 @@ pub trait Setup: storage::Storage {
             &uris_vec,
         );
 
-        self.token_tag(nonce).set(TokenTag {
+        self.token_tag(token_nonce).set(TokenTag {
             display_name: name,
-            nonce,
+            nonce: token_nonce,
             price: selling_price,
             max_per_address,
         });
+
+        self.paused(token_nonce).set(true);
     }
 }

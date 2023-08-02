@@ -21,7 +21,7 @@ pub trait Storage {
 
     #[view(isPaused)]
     #[storage_mapper("paused")]
-    fn paused(&self) -> SingleValueMapper<bool>;
+    fn paused(&self, token_nonce: u64) -> SingleValueMapper<bool>;
 
     #[view(getTokensPerAddressTotal)]
     #[storage_mapper("tokensPerAddressTotal")]

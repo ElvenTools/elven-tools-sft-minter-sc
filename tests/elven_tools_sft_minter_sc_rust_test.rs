@@ -97,9 +97,9 @@ fn sft_minter_test() {
                 );
 
                 // Allow to buy
-                sc.start_selling();
+                sc.start_selling(01u64);
 
-                assert_eq!(sc.paused().is_empty(), true);
+                assert_eq!(sc.paused(01u64).is_empty(), true);
                 assert_eq!(
                     sc.token_tag(01u64).get().price,
                     managed_biguint!(100_000_000_000_000_000)

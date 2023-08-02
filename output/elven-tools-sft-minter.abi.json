@@ -45,7 +45,12 @@
         {
             "name": "isPaused",
             "mutability": "readonly",
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                }
+            ],
             "outputs": [
                 {
                     "type": "bool"
@@ -154,7 +159,7 @@
                     "type": "u32"
                 },
                 {
-                    "name": "nonce",
+                    "name": "token_nonce",
                     "type": "u64"
                 }
             ],
@@ -173,7 +178,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "nonce",
+                    "name": "token_nonce",
                     "type": "u64"
                 },
                 {
@@ -189,7 +194,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "nonce",
+                    "name": "token_nonce",
                     "type": "u64"
                 },
                 {
@@ -203,14 +208,24 @@
             "name": "pauseSelling",
             "onlyOwner": true,
             "mutability": "mutable",
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                }
+            ],
             "outputs": []
         },
         {
             "name": "startSelling",
             "onlyOwner": true,
             "mutability": "mutable",
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                }
+            ],
             "outputs": []
         },
         {
