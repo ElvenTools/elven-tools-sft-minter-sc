@@ -27,8 +27,9 @@ Setup steps with the CLI:
 5. `elven-tools sft-minter set-roles`
 7. `elven-tools sft-minter create`  
 8. `elven-tools sft-minter start-selling`
----then---  
-- Check all available interaction commands: [SFT minter commands](https://www.elven.tools/docs/cli-commands.html#sft-minter-commands)
+---then---
+9. `elven-tools sft-minter buy` 
+10. check all available interaction commands: [SFT minter commands](https://www.elven.tools/docs/cli-commands.html#sft-minter-commands)
 
 (more to come, check the kanban todo [board](https://github.com/orgs/ElvenTools/projects/8))
 

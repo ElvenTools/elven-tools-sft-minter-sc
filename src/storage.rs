@@ -23,9 +23,9 @@ pub trait Storage {
     #[storage_mapper("paused")]
     fn paused(&self, token_nonce: u64) -> SingleValueMapper<bool>;
 
-    #[view(getTokensPerAddressTotal)]
-    #[storage_mapper("tokensPerAddressTotal")]
-    fn tokens_per_address_total(
+    #[view(getAmountPerAddressTotal)]
+    #[storage_mapper("amountPerAddressTotal")]
+    fn amount_per_address_total(
         &self,
         token_nonce: u64,
         address: &ManagedAddress,

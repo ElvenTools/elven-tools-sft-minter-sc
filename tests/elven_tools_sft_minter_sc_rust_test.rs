@@ -133,7 +133,7 @@ fn sft_minter_test() {
     setup
         .b_mock
         .execute_query(&setup.contract_wrapper, |sc| {
-            let query_result = sc.tokens_per_address_total(01u64, &managed_address!(&user_address)).get();
+            let query_result = sc.amount_per_address_total(01u64, &managed_address!(&user_address)).get();
 
             assert_eq!(query_result, managed_biguint!(2));
         })
@@ -216,7 +216,7 @@ fn sft_minter_test() {
             &setup.contract_wrapper,
             &rust_biguint!(0u64),
             |sc| {
-                sc.set_new_tokens_limit_per_address(01u64, managed_biguint!(20));
+                sc.set_new_amount_limit_per_address(01u64, managed_biguint!(20));
             },
         )
         .assert_ok();

@@ -58,7 +58,7 @@
             ]
         },
         {
-            "name": "getTokensPerAddressTotal",
+            "name": "getAmountPerAddressTotal",
             "mutability": "readonly",
             "inputs": [
                 {
@@ -189,7 +189,7 @@
             "outputs": []
         },
         {
-            "name": "setNewTokensLimitPerAddress",
+            "name": "setNewAmountLimitPerAddress",
             "onlyOwner": true,
             "mutability": "mutable",
             "inputs": [

@@ -22,14 +22,14 @@ multiversx_sc_wasm_adapter::endpoints! {
         getCollectionTokenId => collection_token_id
         getCollectionTokenName => collection_token_name
         isPaused => paused
-        getTokensPerAddressTotal => tokens_per_address_total
+        getAmountPerAddressTotal => amount_per_address_total
         issueToken => issue_token
         setLocalRoles => set_local_roles
         createToken => create_token
         buy => buy
         claimScFunds => claim_sc_funds
         setNewPrice => set_new_price
-        setNewTokensLimitPerAddress => set_new_tokens_limit_per_address
+        setNewAmountLimitPerAddress => set_new_amount_limit_per_address
         pauseSelling => pause_selling
         startSelling => start_selling
         getPrice => get_price

@@ -34,7 +34,7 @@ pub trait Operations: storage::Storage {
 
         let caller = self.blockchain().get_caller();
 
-        let tokens_per_address = self.tokens_per_address_total(token_nonce, &caller).get();
+        let tokens_per_address = self.amount_per_address_total(token_nonce, &caller).get();
         let tokens_limit_per_address = token_tag.max_per_address;
 
         let tokens_left_to_mint: BigUint;
@@ -76,10 +76,10 @@ pub trait Operations: storage::Storage {
         self.send()
             .direct(&owner, &payment_token, payment_nonce, &payment_amount);
 
-        let tokens_per_address_total = self.tokens_per_address_total(token_nonce, &caller).get();
+        let amount_per_address_total = self.amount_per_address_total(token_nonce, &caller).get();
 
-        self.tokens_per_address_total(token_nonce, &caller)
-            .set(tokens_per_address_total + amount_of_tokens);
+        self.amount_per_address_total(token_nonce, &caller)
+            .set(amount_per_address_total + amount_of_tokens);
     }
 
     // As an owner, claim Smart Contract balance - temporary solution for royalities, the SC has to be payable to be able to get royalties
@@ -114,8 +114,8 @@ pub trait Operations: storage::Storage {
     }
 
     #[only_owner]
-    #[endpoint(setNewTokensLimitPerAddress)]
-    fn set_new_tokens_limit_per_address(&self, token_nonce: u64, limit: BigUint) {
+    #[endpoint(setNewAmountLimitPerAddress)]
+    fn set_new_amount_limit_per_address(&self, token_nonce: u64, limit: BigUint) {
         let token_tag = self.token_tag(token_nonce).get();
 
         let new_token_tag = TokenTag {
