@@ -17,18 +17,20 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 
 ## How to use it
 
-The simplest way would be with [Elven Tools CLI](https://www.npmjs.com/package/elven-tools). 
+The simplest way would be with [Elven Tools CLI](https://www.elven.tools/docs/cli-sft-workflow.html). 
 
-Steps with the CLI:
+Setup steps with the CLI:
 1. `npm install elven-tools -g`
 2. `elven-tools derive-pem`
 3. `elven-tools deploy sft-minter`
 4. `elven-tools sft-minter issue-collection-token`
 5. `elven-tools sft-minter set-roles`
 7. `elven-tools sft-minter create`  
----then---  
-8. `elven-tools sft-minter buy`
-9. `elven-tools sft-minter set-new-price`  
+8. `elven-tools sft-minter start-selling`
+---then---
+9. `elven-tools sft-minter buy` 
+10. check all available interaction commands: [SFT minter commands](https://www.elven.tools/docs/cli-commands.html#sft-minter-commands)
+
 (more to come, check the kanban todo [board](https://github.com/orgs/ElvenTools/projects/8))
 
 You can also use it with `npx` without global installation.

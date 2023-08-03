@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           11
+// Endpoints:                           16
 // Async Callback:                       1
-// Total number of exported functions:  13
+// Total number of exported functions:  18
 
 #![no_std]
 #![feature(lang_items)]
@@ -18,17 +18,24 @@ multiversx_sc_wasm_adapter::panic_handler!();
 multiversx_sc_wasm_adapter::endpoints! {
     elven_tools_sft_minter
     (
-        getCollectionTokenId
-        getCollectionTokenName
-        issueToken
-        setLocalRoles
-        createToken
-        buy
-        claimScFunds
-        setNewPrice
-        getPrice
-        getTokenDisplayName
-        getMaxAmountPerAddress
-        callBack
+        init => init
+        getCollectionTokenId => collection_token_id
+        getCollectionTokenName => collection_token_name
+        isPaused => paused
+        getAmountPerAddressTotal => amount_per_address_total
+        issueToken => issue_token
+        setLocalRoles => set_local_roles
+        createToken => create_token
+        buy => buy
+        claimScFunds => claim_sc_funds
+        setNewPrice => set_new_price
+        setNewAmountLimitPerAddress => set_new_amount_limit_per_address
+        pauseSelling => pause_selling
+        startSelling => start_selling
+        getPrice => get_price
+        getTokenDisplayName => get_token_display_name
+        getMaxAmountPerAddress => get_max_amount_per_address
     )
 }
+
+multiversx_sc_wasm_adapter::async_callback! { elven_tools_sft_minter }

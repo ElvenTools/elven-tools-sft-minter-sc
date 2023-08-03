@@ -2,20 +2,25 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 use crate::storage;
-use crate::storage::TokenPriceTag;
+use crate::storage::TokenTag;
 
 #[multiversx_sc::module]
 pub trait Operations: storage::Storage {
     #[only_user_account]
     #[payable("EGLD")]
     #[endpoint(buy)]
-    fn buy(&self, amount_of_tokens: u32, nonce: u64) {
+    fn buy(&self, amount_of_tokens: u32, token_nonce: u64) {
+        let token_tag = self.token_tag(token_nonce).get();
         require!(
             !self.collection_token_id().is_empty(),
             "Collection token not issued!"
         );
         require!(
-            !self.token_price_tag(nonce).is_empty(),
+            self.paused(token_nonce).is_empty(),
+            "The minting is paused or haven't started yet!"
+        );
+        require!(
+            !self.token_tag(token_nonce).is_empty(),
             "SFT token with such nonce doesn't exist"
         );
         require!(
@@ -23,18 +28,36 @@ pub trait Operations: storage::Storage {
             "The number of tokens provided can't be less than 1!"
         );
         require!(
-            self.token_price_tag(nonce).get().max_per_address >= amount_of_tokens,
+          token_tag.max_per_address >= amount_of_tokens,
             "The number of tokens has to be less than or equal the maximum per address"
+        );
+
+        let caller = self.blockchain().get_caller();
+
+        let tokens_per_address = self.amount_per_address_total(token_nonce, &caller).get();
+        let tokens_limit_per_address = token_tag.max_per_address;
+
+        let tokens_left_to_mint: BigUint;
+
+        if tokens_limit_per_address < tokens_per_address {
+            tokens_left_to_mint = BigUint::zero();
+        } else {
+            tokens_left_to_mint = tokens_limit_per_address - tokens_per_address;
+        }
+
+        require!(
+            tokens_left_to_mint > 0 && tokens_left_to_mint >= amount_of_tokens,
+            "You can't buy such an amount of tokens. Check the limits per one address!"
         );
 
         let payment_amount = self.call_value().egld_value();
         let single_payment_amount = payment_amount.clone_value() / amount_of_tokens;
-        let price_tag = self.token_price_tag(nonce).get().price;
+        let token_tag = self.token_tag(token_nonce).get().price;
 
         require!(
-        single_payment_amount == price_tag,
-        "Invalid amount as payment. Check payment per one token and amount of tokens you want to buy."
-    );
+            single_payment_amount == token_tag,
+            "Invalid amount as payment. Check payment per one token and amount of tokens you want to buy."
+        );
 
         let collection_token = self.collection_token_id().get();
         let caller = self.blockchain().get_caller();
@@ -42,7 +65,7 @@ pub trait Operations: storage::Storage {
         self.send().direct_esdt(
             &caller,
             &collection_token,
-            nonce,
+            token_nonce,
             &BigUint::from(amount_of_tokens),
         );
 
@@ -52,6 +75,11 @@ pub trait Operations: storage::Storage {
         let owner = self.blockchain().get_owner_address();
         self.send()
             .direct(&owner, &payment_token, payment_nonce, &payment_amount);
+
+        let amount_per_address_total = self.amount_per_address_total(token_nonce, &caller).get();
+
+        self.amount_per_address_total(token_nonce, &caller)
+            .set(amount_per_address_total + amount_of_tokens);
     }
 
     // As an owner, claim Smart Contract balance - temporary solution for royalities, the SC has to be payable to be able to get royalties
@@ -68,35 +96,61 @@ pub trait Operations: storage::Storage {
 
     #[only_owner]
     #[endpoint(setNewPrice)]
-    fn set_new_price(&self, nonce: u64, new_price: BigUint) {
+    fn set_new_price(&self, token_nonce: u64, new_price: BigUint) {
         require!(
-            !self.token_price_tag(nonce).is_empty(),
+            !self.token_tag(token_nonce).is_empty(),
             "SFT token with such nonce doesn't exist"
         );
         require!(new_price >= 0, "Selling price can not be less than 0!");
 
-        let price_tag = self.token_price_tag(nonce).get();
+        let token_tag = self.token_tag(token_nonce).get();
 
-        let new_price_tag = TokenPriceTag {
+        let new_token_tag = TokenTag {
             price: new_price,
-            ..price_tag
+            ..token_tag
         };
 
-        self.token_price_tag(nonce).set(new_price_tag);
+        self.token_tag(token_nonce).set(new_token_tag);
+    }
+
+    #[only_owner]
+    #[endpoint(setNewAmountLimitPerAddress)]
+    fn set_new_amount_limit_per_address(&self, token_nonce: u64, limit: BigUint) {
+        let token_tag = self.token_tag(token_nonce).get();
+
+        let new_token_tag = TokenTag {
+            max_per_address: limit,
+            ..token_tag
+        };
+
+        self.token_tag(token_nonce).set(new_token_tag);
+    }
+
+    #[only_owner]
+    #[endpoint(pauseSelling)]
+    fn pause_selling(&self, token_nonce: u64) {
+        self.paused(token_nonce).set(true);
+    }
+
+    #[only_owner]
+    #[endpoint(startSelling)]
+    fn start_selling(&self, token_nonce: u64) {
+        require!(!self.collection_token_id().is_empty(), "Token not issued!");
+        self.paused(token_nonce).clear();
     }
 
     #[view(getPrice)]
     fn get_price(&self, token_nonce: u64) -> BigUint {
-        self.token_price_tag(token_nonce).get().price
+        self.token_tag(token_nonce).get().price
     }
 
     #[view(getTokenDisplayName)]
     fn get_token_display_name(&self, token_nonce: u64) -> ManagedBuffer {
-        self.token_price_tag(token_nonce).get().display_name
+        self.token_tag(token_nonce).get().display_name
     }
 
     #[view(getMaxAmountPerAddress)]
     fn get_max_amount_per_address(&self, token_nonce: u64) -> BigUint {
-        self.token_price_tag(token_nonce).get().max_per_address
+        self.token_tag(token_nonce).get().max_per_address
     }
 }
