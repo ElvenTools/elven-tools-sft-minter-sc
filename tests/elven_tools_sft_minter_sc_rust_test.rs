@@ -1,7 +1,9 @@
 use elven_tools_sft_minter::{operations::Operations, setup::Setup, storage::Storage, *};
+use multiversx_sc::codec::Empty;
 use multiversx_sc::types::{Address, EsdtLocalRole, ManagedVec, MultiValueEncoded};
 use multiversx_sc_scenario::{
-    managed_biguint, managed_buffer, managed_token_id, managed_address, rust_biguint, testing_framework::*, DebugApi,
+    managed_address, managed_biguint, managed_buffer, managed_token_id, rust_biguint,
+    testing_framework::*, DebugApi,
 };
 
 const WASM_PATH: &'static str = "output/elven_tools_sft_minter.wasm";
@@ -133,7 +135,9 @@ fn sft_minter_test() {
     setup
         .b_mock
         .execute_query(&setup.contract_wrapper, |sc| {
-            let query_result = sc.amount_per_address_total(01u64, &managed_address!(&user_address)).get();
+            let query_result = sc
+                .amount_per_address_total(01u64, &managed_address!(&user_address))
+                .get();
 
             assert_eq!(query_result, managed_biguint!(2));
         })
@@ -243,4 +247,57 @@ fn sft_minter_test() {
             },
         )
         .assert_ok();
+
+    // I should now have 99980 tokens left
+    setup.b_mock.check_nft_balance(
+        &setup.contract_wrapper.address_ref(),
+        TOKEN_ID,
+        01u64,
+        &rust_biguint!(99980),
+        Option::<&Empty>::None,
+    );
+
+    // I want to decrease the initial supply now
+    setup
+        .b_mock
+        .execute_tx(
+            &owner_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(0u64),
+            |sc| {
+                sc.burn(01u64, &managed_biguint!(980));
+            },
+        )
+        .assert_ok();
+
+    // I should now have 99000 tokens left
+    setup.b_mock.check_nft_balance(
+        &setup.contract_wrapper.address_ref(),
+        TOKEN_ID,
+        01u64,
+        &rust_biguint!(99000),
+        Option::<&Empty>::None,
+    );
+
+    // I want to increase the initial supply now
+    setup
+        .b_mock
+        .execute_tx(
+            &owner_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(0u64),
+            |sc| {
+                sc.mint(01u64, &managed_biguint!(1000));
+            },
+        )
+        .assert_ok();
+
+    // I should now have 100000 tokens left
+    setup.b_mock.check_nft_balance(
+        &setup.contract_wrapper.address_ref(),
+        TOKEN_ID,
+        01u64,
+        &rust_biguint!(100000),
+        Option::<&Empty>::None,
+    );
 }

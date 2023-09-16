@@ -5,11 +5,12 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           16
+// Endpoints:                           18
 // Async Callback:                       1
-// Total number of exported functions:  18
+// Total number of exported functions:  20
 
 #![no_std]
+#![allow(internal_features)]
 #![feature(lang_items)]
 
 multiversx_sc_wasm_adapter::allocator!();
@@ -26,6 +27,8 @@ multiversx_sc_wasm_adapter::endpoints! {
         issueToken => issue_token
         setLocalRoles => set_local_roles
         createToken => create_token
+        mint => mint
+        burn => burn
         buy => buy
         claimScFunds => claim_sc_funds
         setNewPrice => set_new_price

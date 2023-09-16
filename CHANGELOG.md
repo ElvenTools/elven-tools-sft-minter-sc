@@ -1,3 +1,7 @@
+### [0.4.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.4.0) (2023-09-16)
+- add burn and mint endpoints
+- update `multiversx-sc` libraries
+
 ### [0.3.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.3.0) (2023-08-03)
 - add pause/start buying SFTs endpoint
 - add change max tokens per address endpoint

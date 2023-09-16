@@ -158,4 +158,20 @@ pub trait Setup: storage::Storage {
 
         self.paused(token_nonce).set(true);
     }
+
+    // Increase the initial amount/supply for the token
+    #[only_owner]
+    #[endpoint(mint)]
+    fn mint(&self, token_nonce: u64, amount: &BigUint) {
+        let token_id = self.collection_token_id().get();
+        self.send().esdt_local_mint(&token_id, token_nonce, amount);
+    }
+
+    // Decrease the initial amount/supply for the token
+    #[only_owner]
+    #[endpoint(burn)]
+    fn burn(&self, token_nonce: u64, amount: &BigUint) {
+        let token_id = self.collection_token_id().get();
+        self.send().esdt_local_burn(&token_id, token_nonce, amount);
+    }
 }
