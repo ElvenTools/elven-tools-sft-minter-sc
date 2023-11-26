@@ -1,3 +1,7 @@
+### [0.5.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.4.0) (2023-11-26)
+- add possibility to define collection token properties
+- update `multiversx-sc` libraries
+
 ### [0.4.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.4.0) (2023-09-16)
 - add burn and mint endpoints
 - update `multiversx-sc` libraries

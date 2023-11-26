@@ -59,4 +59,4 @@ cargo test --test elven_tools_sft_minter_sc_rust_test
 - [Elven Tools](https://www.elven.tools) - SFTs and NFTs tools on the MultiversX blockchain - smart contracts, cli and dapp template
 - [useElven](https://www.useelven.com) - React hooks to be used with Next.js or standalone React
 - [elven.js](https://www.elvenjs.com) - The browser only lite MultiversX SDK, no build steps required. Works with static websites.
-- [Buildo Begins](https://github.com/xdevguild/buildo-begins) - All things MultiversX CLI tool.
+- [Buildo.dev](https://www.buildo.dev) - All things MultiversX CLI tool.

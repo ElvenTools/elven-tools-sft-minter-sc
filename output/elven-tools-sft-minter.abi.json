@@ -9,11 +9,11 @@
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.4.0"
+            "version": "0.5.0"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.43.3"
+            "version": "0.45.1"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -91,6 +91,11 @@
                 {
                     "name": "collection_token_ticker",
                     "type": "bytes"
+                },
+                {
+                    "name": "token_properties",
+                    "type": "optional<variadic<SFTProperties>>",
+                    "multi_arg": true
                 }
             ],
             "outputs": []
@@ -306,7 +311,41 @@
             ]
         }
     ],
-    "events": [],
+    "esdtAttributes": [],
     "hasCallback": true,
-    "types": {}
+    "types": {
+        "SFTProperties": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "CanFreeze",
+                    "discriminant": 0
+                },
+                {
+                    "name": "CanWipe",
+                    "discriminant": 1
+                },
+                {
+                    "name": "CanPause",
+                    "discriminant": 2
+                },
+                {
+                    "name": "CanTransferCreateRole",
+                    "discriminant": 3
+                },
+                {
+                    "name": "CanChangeOwner",
+                    "discriminant": 4
+                },
+                {
+                    "name": "CanUpgrade",
+                    "discriminant": 5
+                },
+                {
+                    "name": "CanAddSpecialRoles",
+                    "discriminant": 6
+                }
+            ]
+        }
+    }
 }

@@ -10,6 +10,17 @@ const ATTR_SEPARATOR: &[u8] = ";".as_bytes();
 const URI_SLASH: &[u8] = "/".as_bytes();
 const TAGS_KEY_NAME: &[u8] = "tags:".as_bytes();
 
+#[derive(TypeAbi, TopEncode, TopDecode)]
+pub enum SFTProperties {
+    CanFreeze,
+    CanWipe,
+    CanPause,
+    CanTransferCreateRole,
+    CanChangeOwner,
+    CanUpgrade,
+    CanAddSpecialRoles,
+}
+
 #[multiversx_sc::module]
 pub trait Setup: storage::Storage {
     // Issue main collection token/handler
@@ -20,6 +31,7 @@ pub trait Setup: storage::Storage {
         &self,
         collection_token_name: ManagedBuffer,
         collection_token_ticker: ManagedBuffer,
+        token_properties: OptionalValue<MultiValueEncoded<SFTProperties>>,
     ) {
         let issue_cost = self.call_value().egld_value();
         require!(
@@ -29,21 +41,46 @@ pub trait Setup: storage::Storage {
 
         self.collection_token_name().set(&collection_token_name);
 
+        let mut properties = SemiFungibleTokenProperties {
+            can_freeze: false,
+            can_wipe: false,
+            can_pause: false,
+            can_transfer_create_role: false,
+            can_change_owner: false,
+            can_upgrade: false,
+            can_add_special_roles: true, // to proceed it is required anyway, so there is no sense to leave it false
+        };
+
+        let properties_option = token_properties.into_option();
+
+        match properties_option {
+            Some(value) => {
+                for token_propery in value.into_iter() {
+                    match token_propery {
+                        SFTProperties::CanFreeze => properties.can_freeze = true,
+                        SFTProperties::CanWipe => properties.can_wipe = true,
+                        SFTProperties::CanPause => properties.can_pause = true,
+                        SFTProperties::CanTransferCreateRole => {
+                            properties.can_transfer_create_role = true
+                        }
+                        SFTProperties::CanChangeOwner => properties.can_change_owner = true,
+                        SFTProperties::CanUpgrade => properties.can_upgrade = true,
+                        SFTProperties::CanAddSpecialRoles => {
+                            properties.can_add_special_roles = true
+                        }
+                    };
+                }
+            }
+            None => {}
+        }
+
         self.send()
             .esdt_system_sc_proxy()
             .issue_semi_fungible(
                 issue_cost.clone_value(),
                 &collection_token_name,
                 &collection_token_ticker,
-                SemiFungibleTokenProperties {
-                    can_freeze: false,
-                    can_wipe: false,
-                    can_pause: false,
-                    can_transfer_create_role: false,
-                    can_change_owner: false,
-                    can_upgrade: false,
-                    can_add_special_roles: true,
-                },
+                properties,
             )
             .async_call()
             .with_callback(self.callbacks().issue_callback())
