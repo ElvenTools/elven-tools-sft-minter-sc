@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           18
+// Endpoints:                           19
 // Async Callback:                       1
-// Total number of exported functions:  20
+// Total number of exported functions:  21
 
 #![no_std]
 #![allow(internal_features)]
@@ -20,6 +20,7 @@ multiversx_sc_wasm_adapter::endpoints! {
     elven_tools_sft_minter
     (
         init => init
+        upgrade => upgrade
         getCollectionTokenId => collection_token_id
         getCollectionTokenName => collection_token_name
         isPaused => paused

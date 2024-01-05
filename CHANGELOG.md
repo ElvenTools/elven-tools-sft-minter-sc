@@ -1,4 +1,8 @@
-### [0.5.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.4.0) (2023-11-26)
+### [0.6.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.6.0) (2024-01-05)
+- add possibility to define special roles
+- update `multiversx-sc` libraries
+
+### [0.5.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.5.0) (2023-11-26)
 - add possibility to define collection token properties
 - update `multiversx-sc` libraries
 

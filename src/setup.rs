@@ -21,6 +21,14 @@ pub enum SFTProperties {
     CanAddSpecialRoles,
 }
 
+#[derive(TypeAbi, TopEncode, TopDecode)]
+pub enum SFTRoles {
+    ESDTRoleNFTCreate,
+    ESDTRoleNFTBurn,
+    ESDTRoleNFTAddQuantity,
+    ESDTTransferRole,
+}
+
 #[multiversx_sc::module]
 pub trait Setup: storage::Storage {
     // Issue main collection token/handler
@@ -111,21 +119,38 @@ pub trait Setup: storage::Storage {
     // Set roles for the SFT token
     #[only_owner]
     #[endpoint(setLocalRoles)]
-    fn set_local_roles(&self) {
+    fn set_local_roles(&self, token_roles: OptionalValue<MultiValueEncoded<SFTRoles>>) {
         require!(!self.collection_token_id().is_empty(), "Token not issued!");
+
+        let mut roles: ManagedVec<EsdtLocalRole> = ManagedVec::new();
+        let roles_option = token_roles.into_option();
+
+        match roles_option {
+            Some(value) => {
+                for token_role in value.into_iter() {
+                    match token_role {
+                        SFTRoles::ESDTRoleNFTCreate => roles.push(EsdtLocalRole::NftCreate),
+                        SFTRoles::ESDTRoleNFTAddQuantity => {
+                            roles.push(EsdtLocalRole::NftAddQuantity)
+                        }
+                        SFTRoles::ESDTRoleNFTBurn => roles.push(EsdtLocalRole::NftBurn),
+                        SFTRoles::ESDTTransferRole => roles.push(EsdtLocalRole::Transfer),
+                    }
+                }
+            }
+            // When not prvided these are required roles to proceed
+            None => {
+                roles.push(EsdtLocalRole::NftCreate);
+                roles.push(EsdtLocalRole::NftAddQuantity);
+            }
+        }
 
         self.send()
             .esdt_system_sc_proxy()
             .set_special_roles(
                 &self.blockchain().get_sc_address(),
                 &self.collection_token_id().get(),
-                (&[
-                    EsdtLocalRole::NftCreate,
-                    EsdtLocalRole::NftAddQuantity,
-                    EsdtLocalRole::NftBurn,
-                ][..])
-                    .into_iter()
-                    .cloned(),
+                roles.iter(),
             )
             .async_call()
             .call_and_exit();

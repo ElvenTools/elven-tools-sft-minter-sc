@@ -9,11 +9,11 @@
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.5.0"
+            "version": "0.6.0"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.45.1"
+            "version": "0.45.2"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -22,6 +22,12 @@
         "outputs": []
     },
     "endpoints": [
+        {
+            "name": "upgrade",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
         {
             "name": "getCollectionTokenId",
             "mutability": "readonly",
@@ -104,7 +110,13 @@
             "name": "setLocalRoles",
             "onlyOwner": true,
             "mutability": "mutable",
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "token_roles",
+                    "type": "optional<variadic<SFTRoles>>",
+                    "multi_arg": true
+                }
+            ],
             "outputs": []
         },
         {
@@ -344,6 +356,27 @@
                 {
                     "name": "CanAddSpecialRoles",
                     "discriminant": 6
+                }
+            ]
+        },
+        "SFTRoles": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "ESDTRoleNFTCreate",
+                    "discriminant": 0
+                },
+                {
+                    "name": "ESDTRoleNFTBurn",
+                    "discriminant": 1
+                },
+                {
+                    "name": "ESDTRoleNFTAddQuantity",
+                    "discriminant": 2
+                },
+                {
+                    "name": "ESDTTransferRole",
+                    "discriminant": 3
                 }
             ]
         }
