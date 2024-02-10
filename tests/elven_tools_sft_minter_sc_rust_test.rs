@@ -72,6 +72,9 @@ fn sft_minter_test() {
     let owner_address = setup.owner_address.clone();
     let user_address = setup.user_address.clone();
 
+    let giveaway_user_address_1 = setup.b_mock.create_user_account(&rust_biguint!(0));
+    let giveaway_user_address_2 = setup.b_mock.create_user_account(&rust_biguint!(0));
+
     // Create token
     setup
         .b_mock
@@ -131,7 +134,7 @@ fn sft_minter_test() {
         .b_mock
         .check_egld_balance(&owner_address, &rust_biguint!(200_000_000_000_000_000));
 
-    // After buying the user should have 2 tokens per address
+    // After buying the user should have 2 supply per address
     setup
         .b_mock
         .execute_query(&setup.contract_wrapper, |sc| {
@@ -212,7 +215,7 @@ fn sft_minter_test() {
         })
         .assert_ok();
 
-    // Change the max tokens per address limit
+    // Change the max supply per address limit
     setup
         .b_mock
         .execute_tx(
@@ -234,8 +237,8 @@ fn sft_minter_test() {
         })
         .assert_ok();
 
-    // Now I should be able to buy more than 10 tokens with a new price of 2egld per token
-    // I can buy max 18 tokens at once even if the limit is 20, because I already have 2
+    // Now I should be able to buy more than 10 supply with a new price of 2egld per token
+    // I can buy max 18 supply at once even if the limit is 20, because I already have 2
     setup
         .b_mock
         .execute_tx(
@@ -248,7 +251,7 @@ fn sft_minter_test() {
         )
         .assert_ok();
 
-    // I should now have 99980 tokens left
+    // I should now have 99980 supply left
     setup.b_mock.check_nft_balance(
         &setup.contract_wrapper.address_ref(),
         TOKEN_ID,
@@ -270,7 +273,7 @@ fn sft_minter_test() {
         )
         .assert_ok();
 
-    // I should now have 99000 tokens left
+    // I should now have 99000 supply left
     setup.b_mock.check_nft_balance(
         &setup.contract_wrapper.address_ref(),
         TOKEN_ID,
@@ -292,12 +295,38 @@ fn sft_minter_test() {
         )
         .assert_ok();
 
-    // I should now have 100000 tokens left
+    // I should now have 100000 supply left
     setup.b_mock.check_nft_balance(
         &setup.contract_wrapper.address_ref(),
         TOKEN_ID,
         01u64,
         &rust_biguint!(100000),
+        Option::<&Empty>::None,
+    );
+
+    // Giveaway 10000 to two addresses per 5000
+    setup
+        .b_mock
+        .execute_tx(
+            &owner_address,
+            &setup.contract_wrapper,
+            &rust_biguint!(0u64),
+            |sc| {
+                let mut receivers = MultiValueEncoded::new();
+                receivers.push((managed_address!(&giveaway_user_address_1), 01u64, managed_biguint!(5000)));
+                receivers.push((managed_address!(&giveaway_user_address_2), 01u64, managed_biguint!(5000)));
+
+                sc.giveaway(receivers);
+            },
+        )
+        .assert_ok();
+
+    // I should now have 90000 supply left because I gave away 10000 in two 5000 batches
+    setup.b_mock.check_nft_balance(
+        &setup.contract_wrapper.address_ref(),
+        TOKEN_ID,
+        01u64,
+        &rust_biguint!(90000),
         Option::<&Empty>::None,
     );
 }

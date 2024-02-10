@@ -25,11 +25,11 @@ pub trait Operations: storage::Storage {
         );
         require!(
             amount_of_tokens > 0,
-            "The number of tokens provided can't be less than 1!"
+            "The supply for the provided token can't be less than 1!"
         );
         require!(
-          token_tag.max_per_address >= amount_of_tokens,
-            "The number of tokens has to be less than or equal the maximum per address"
+            token_tag.max_per_address >= amount_of_tokens,
+            "The supply for the provided token has to be less than or equal the maximum per address"
         );
 
         let caller = self.blockchain().get_caller();
@@ -80,6 +80,35 @@ pub trait Operations: storage::Storage {
 
         self.amount_per_address_total(token_nonce, &caller)
             .set(amount_per_address_total + amount_of_tokens);
+    }
+
+    // As an owner of the smart contract, you can send SFTs supply to chosen addresses. There are no limits for each address here. You can give it away even when minting is paused.
+    #[only_owner]
+    #[endpoint(giveaway)]
+    fn giveaway(&self, receivers: MultiValueEncoded<(ManagedAddress, u64, BigUint)>) {
+        let collection_token = self.collection_token_id().get();
+        require!(
+            !self.collection_token_id().is_empty(),
+            "Collection token not issued!"
+        );
+
+        for receiver in receivers.into_iter() {
+            require!(
+                !self.token_tag(receiver.1).is_empty(),
+                "SFT token with such nonce doesn't exist"
+            );
+            require!(
+                receiver.2 > 0,
+                "The supply for the provided token can't be less than 1!"
+            );
+
+            self.send().direct_esdt(
+                &receiver.0,
+                &collection_token,
+                receiver.1,
+                &BigUint::from(receiver.2),
+            );
+        }
     }
 
     // As an owner, claim Smart Contract balance - temporary solution for royalities, the SC has to be payable to be able to get royalties

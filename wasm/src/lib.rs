@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           19
+// Endpoints:                           20
 // Async Callback:                       1
-// Total number of exported functions:  21
+// Total number of exported functions:  22
 
 #![no_std]
 #![allow(internal_features)]
@@ -31,6 +31,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         mint => mint
         burn => burn
         buy => buy
+        giveaway => giveaway
         claimScFunds => claim_sc_funds
         setNewPrice => set_new_price
         setNewAmountLimitPerAddress => set_new_amount_limit_per_address

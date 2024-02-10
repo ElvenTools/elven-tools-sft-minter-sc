@@ -9,11 +9,11 @@
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.6.0"
+            "version": "0.7.0"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.45.2"
+            "version": "0.47.4"
         }
     },
     "name": "ElvenToolsSftMinter",
@@ -210,6 +210,19 @@
                 {
                     "name": "token_nonce",
                     "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "giveaway",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "receivers",
+                    "type": "variadic<tuple<Address,u64,BigUint>>",
+                    "multi_arg": true
                 }
             ],
             "outputs": []
