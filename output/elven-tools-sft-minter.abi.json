@@ -1,19 +1,19 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.73.0-nightly",
-            "commitHash": "db7ff98a72f3e742b641f9cb16d0e8c285e87e9b",
-            "commitDate": "2023-07-31",
+            "version": "1.78.0-nightly",
+            "commitHash": "2d24fe591f30386d6d5fc2bb941c78d7266bf10f",
+            "commitDate": "2024-03-09",
             "channel": "Nightly",
-            "short": "rustc 1.73.0-nightly (db7ff98a7 2023-07-31)"
+            "short": "rustc 1.78.0-nightly (2d24fe591 2024-03-09)"
         },
         "contractCrate": {
             "name": "elven-tools-sft-minter",
-            "version": "0.7.0"
+            "version": "0.7.1"
         },
         "framework": {
             "name": "multiversx-sc",
-            "version": "0.47.4"
+            "version": "0.48.0"
         }
     },
     "name": "ElvenToolsSftMinter",

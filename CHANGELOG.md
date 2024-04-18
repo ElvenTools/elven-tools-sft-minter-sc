@@ -1,3 +1,6 @@
+### [0.7.1](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.7.1) (2024-04-18)
+- update `multiversx-sc` libraries
+
 ### [0.7.0](https://github.com/ElvenTools/elven-tools-sft-smart-contract/releases/tag/v0.7.0) (2024-02-10)
 - add giveaway functionality
 - update `multiversx-sc` libraries

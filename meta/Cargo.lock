@@ -303,14 +303,14 @@ dependencies = [
 
 [[package]]
 name = "elven-tools-sft-minter"
-version = "0.7.0"
+version = "0.7.1"
 dependencies = [
  "multiversx-sc",
 ]
 
 [[package]]
 name = "elven-tools-sft-minter-meta"
-version = "0.7.0"
+version = "0.7.1"
 dependencies = [
  "elven-tools-sft-minter",
  "multiversx-sc-meta",
@@ -743,9 +743,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc"
-version = "0.47.4"
+version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40b69a83a9423be4b543edee969205aa43ef4397c48b965a65bad857e022db5c"
+checksum = "ba1291e3712731f4e34775254e9a9b8ff70132d15414f2e51f9bc82c23faf48c"
 dependencies = [
  "bitflags 2.4.2",
  "hex-literal",
@@ -779,9 +779,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-derive"
-version = "0.47.4"
+version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5fe6400e2f4e57f7c9c00ad76108794aa962657cf62b4d4f49b99f02d9a6ba5"
+checksum = "95f0331893be2b757401b2deaf7d8b8c90745fa69114000d83fe26d8487d35a5"
 dependencies = [
  "hex",
  "proc-macro2",
@@ -792,9 +792,9 @@ dependencies = [
 
 [[package]]
 name = "multiversx-sc-meta"
-version = "0.47.4"
+version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12dec6cc0735acb48fce290b367c9d22684103055f00a7dec057840fc134973d"
+checksum = "add1bda75ed39bdb246097e5233a4ed7af6587f7c06a7e5084742199d685f6ab"
 dependencies = [
  "clap",
  "colored",

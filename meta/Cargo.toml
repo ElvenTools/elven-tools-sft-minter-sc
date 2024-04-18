@@ -1,6 +1,6 @@
 [package]
 name = "elven-tools-sft-minter-meta"
-version = "0.7.0"
+version = "0.7.1"
 authors = ["Julian Ćwirko <julian.io>"]
 edition = "2021"
 publish = false
@@ -9,4 +9,4 @@ publish = false
 path = ".."
 
 [dependencies.multiversx-sc-meta]
-version = "0.47.4"
+version = "0.48.0"
