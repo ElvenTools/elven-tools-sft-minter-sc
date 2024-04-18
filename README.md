@@ -10,6 +10,7 @@ The SFT minter will be a complementary tool of the new NFT minter but will also 
 - mint, create, buy and send SFTs (payment with EGLD)
 - claim funds from smart contract
 - change the price
+- giveaways
 
 ## For later
 
